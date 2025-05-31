@@ -38,11 +38,11 @@ app.get('/api/available-rooms', async (req, res) => {
   
   try {
     // 3. 建立連線
-    await sql.connect(config);
-    
-    // 4. 建立 SQL 請求，並傳入參數給 SP
     const pool = await sql.connect(config);
     const result = await pool.request()
+    
+    // 4. 建立 SQL 請求，並傳入參數給 SP
+    
       .input('RoomTypeID', sql.Int, parseInt(roomTypeID)) // 把字串轉數字
       .input('CheckInDate', sql.Date, checkInDate)
       .input('CheckOutDate', sql.Date, checkOutDate)
@@ -62,13 +62,16 @@ app.get('/api/available-rooms', async (req, res) => {
 app.post('/api/customers', async (req, res) => {
   const { name, email, phone } = req.body;
 
+console.log('收到客戶資料：', { name, email, phone });//查驗是否收到前端資料
+
+
   if (!name || !email || !phone) {
     return res.status(400).json({ error: '缺少必要欄位' });
   }
 
   try {
-    await sql.connect(config);
-    await sql.request()
+    const pool = await sql.connect(config);  // ✅ 建立 pool
+    await pool.request()                     // ✅ 使用 pool.request()
       .input('Name', sql.NVarChar(100), name)
       .input('Email', sql.NVarChar(100), email)
       .input('Phone', sql.NVarChar(20), phone)
@@ -77,11 +80,12 @@ app.post('/api/customers', async (req, res) => {
     res.json({ message: '客戶新增成功！' });
   } catch (err) {
     console.error('SQL error:', err);
-    res.status(500).json({ error: '新增失敗' });
+    res.status(500).json({ error: err.message || '新增失敗' });
   } finally {
     await sql.close();
   }
 });
+
 
 // ✅ sp_AddBooking：新增訂房
 app.post('/api/book-room', async (req, res) => {
@@ -92,8 +96,8 @@ app.post('/api/book-room', async (req, res) => {
   }
 
   try {
-    await sql.connect(config);
-    await sql.request()
+    const pool = await sql.connect(config);  // ⬅ 這行一定要有
+    await pool.request()
       .input('CustomerID', sql.Int, customerID)
       .input('RoomTypeID', sql.Int, roomTypeID)
       .input('CheckInDate', sql.Date, checkInDate)
@@ -117,8 +121,8 @@ app.post('/api/cancel-booking', async (req, res) => {
   }
 
   try {
-    await sql.connect(config);
-    await sql.request()
+    const pool = await sql.connect(config);  // ⬅ 這行一定要有
+    await pool.request()
       .input('BookingID', sql.Int, bookingID)
       .execute('sp_CancelBooking');
 
@@ -140,8 +144,8 @@ app.post('/api/check-in', async (req, res) => {
   }
 
   try {
-    await sql.connect(config);
-    await sql.request()
+    const pool = await sql.connect(config);  // ⬅ 這行一定要有
+    await pool.request()
       .input('BookingID', sql.Int, bookingID)
       .execute('sp_CheckIn');
 
@@ -163,8 +167,8 @@ app.post('/api/check-out', async (req, res) => {
   }
 
   try {
-    await sql.connect(config);
-    await sql.request()
+    const pool = await sql.connect(config);  // ⬅ 這行一定要有
+    await pool.request()
       .input('BookingID', sql.Int, bookingID)
       .execute('sp_CheckOut');
 

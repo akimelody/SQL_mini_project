@@ -1,0 +1,51 @@
+SQL小小專
+
+V2目前功能缺陷與預計修正事項
+
+新增客戶
+	
+	功能:
+		主要在Customers標單新增客戶ID、姓名、電話、e-mail
+	缺陷:
+		目前想到的都已經修正
+
+訂房
+	功能 :
+		在Booking表單輸入客戶ID、房型ID、CheckInDate、CheckoutDate
+	缺陷 :
+		需要輸入客戶ID與房型ID，應該有更好的方法或需要與其他功能聯動
+		CheckInDate 與 CheckoutDate 還有設置條件，並且有可能會有重複訂房的情況
+		因為條件都還沒有設定
+
+查詢可用房間
+
+	功能:
+		查詢空房並排除已經被預約的房間，顯示目前空房
+	缺陷:	
+		需要輸入房型ID，預計改成直接下拉式選單顯示房型
+		需要加入基本驗證
+		-> 查詢不到東西目前也不會回傳錯誤資訊
+		-> CheckInDate 與 CheckoutDate 條件也還沒有設定
+	
+取消訂房
+	功能:
+		將Booking表單的Booking改成Canceled
+	缺陷:
+		還沒設定條件
+		目前所有狀況都能改成Canceled
+		
+入住
+	功能:
+		將Booking表單的Booking改成CheckedIn
+	缺陷:
+		還沒設定條件
+		目前所有狀況都能改成Checkedin
+		ex:Checkedout後還能Checkedin
+
+退房
+	功能:
+		將Booking表單的Booking改成Checkedout
+	缺陷:
+		還沒設定條件
+		目前所有狀況都能改成Checkedout
+		ex:沒有CheckedIn也能Checkedout
