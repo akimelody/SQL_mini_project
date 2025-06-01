@@ -1,0 +1,32 @@
+250531_SQL_miniProject_MeetingMinutes
+
+1.決定要套版的網頁
+
+	台中拓程商旅
+	https://thegaleriehotel.hexa.tw/hexa/booking?start=2025-05-31&end=2025-06-01&adults=2&children=0&room=1&duration=1
+
+2.工作分配
+
+	廖昌祐 : 新增訂房訂單
+	洪瑞甫 : 取消訂單
+	林高至 : 新增客戶
+	黃子祈 : checkin、查詢訂單
+	victor Lu : checkout
+	Yiching : getAvailableRooms
+
+	*新增功能 : 查詢訂房資訊
+	*決定不新增 : 會員相關功能
+
+3.決定要繳交的進度
+
+	會議後(週六)產生ER丟上DC並產生CODE
+	其他人確認是否有需要修改的地方(週六晚上)
+	stored procedure寫好就都到DC上
+	PTT 自己報告的部分晚上九點以前
+
+4.決定下次開會時間、地點、形式
+
+	週一中午 整合stored procedure看是否能執行
+	*用瑞甫的筆電上台DEMO
+
+5.其他需要討論的內容或想提出的意見

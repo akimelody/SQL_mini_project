@@ -140,7 +140,7 @@ app.post('/api/check-in', async (req, res) => {
   const { bookingID } = req.body;
 
   if (!bookingID) {
-    return res.status(400).json({ error: '缺少訂單編號' });
+    return res.status(400).json({ error: '請提供正確的訂房 ID' });
   }
 
   try {
@@ -149,10 +149,10 @@ app.post('/api/check-in', async (req, res) => {
       .input('BookingID', sql.Int, bookingID)
       .execute('sp_CheckIn');
 
-    res.json({ message: '入住成功' });
+    res.json({ message: '辦理入住成功！' });
   } catch (err) {
     console.error('SQL error:', err);
-    res.status(500).json({ error: '入住失敗' });
+    res.status(500).json({ error: '辦理入住失敗' });
   } finally {
     await sql.close();
   }

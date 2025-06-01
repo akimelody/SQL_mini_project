@@ -10,18 +10,51 @@
 
   <input class="form-control mb-2" id="bookingID" placeholder="輸入訂房 ID">
   <button class="btn btn-danger" onclick="cancelBooking()">取消訂房</button>
-  <div id="msg"></div>
+  <div id="msg" class="mt-3"></div>
 
-  <script>
-    async function cancelBooking() {
+  <br><br>
+  <p><a href="/index.html" class="btn btn-primary">回首頁</a></p>
+
+<script>
+  async function cancelBooking() {
+    const id = bookingID.value.trim();//取得輸入框內容並移除前後空白。
+    if (!id || isNaN(id)) { //檢查是否為空、是否不是數字（NaN = Not a Number）
+      msg.innerHTML = `<div class="alert alert-danger">請輸入正確的訂房 ID</div>`;
+      return;
+    }
+
+    // 顯示處理中並禁用按鈕
+    msg.innerHTML = `<div class="alert alert-info">處理中...</div>`;
+    const btn = event.target;
+    btn.disabled = true;
+    // 使用 event.target 抓取觸發這個 function 的按鈕，然後設為 disabled，避免使用者連續點擊。
+
+    try {
       const res = await fetch('/api/cancel-booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bookingID: bookingID.value })
+        body: JSON.stringify({ bookingID: id })
       });
       const data = await res.json();
-      msg.innerText = data.message || data.error;
+      // 發送 POST 請求到 /api/cancel-booking。
+      // 設定標頭為 JSON。
+      // 將輸入的 bookingID 包裝為 JSON 傳給後端。
+      // 等待回應後將其轉為 JSON 資料儲存在 data。
+
+      msg.innerHTML = `<div class="alert alert-${data.error ? 'danger' : 'success'}">${data.message || data.error}</div>`;
+      if (!data.error) bookingID.value = '';
+      // 根據 data.error 是否存在，選擇要顯示紅色（alert-danger）或綠色（alert-success）的 Bootstrap 警示框。
+      // 如果沒有錯誤，則清空輸入欄位，讓使用者知道動作完成。
+
+    } catch (err) {
+      msg.innerHTML = `<div class="alert alert-danger">發生錯誤，請稍後再試。</div>`;
     }
-  </script>
+      // 如果 fetch 發生錯誤（例如伺服器沒回應、網路中斷），就會跳到這個 catch 區塊，顯示錯誤提示。
+    
+      btn.disabled = false;
+      // 不論成功或失敗，都要讓按鈕恢復啟用，讓使用者可以再次操作。
+  }
+</script>
+
 </body>
 </html>
